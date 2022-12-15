@@ -1,11 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 // import * as Font from 'expo-font';
 // import { AppLoading } from 'expo';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, ImageBackground, Image, Text, TextInput, TouchableHighlight, View } from 'react-native';
+import {
+  StyleSheet, 
+  ImageBackground,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Keyboard
+} from 'react-native';
 
 const imageBG = require('./images/bg-photo.png');
 const image = require('./images/avatar.png');
+
+function keyboardHide() {
+  setIsShowKeyboard(false);
+  Keyboard.dismiss();
+};
 // const loadFonts = async () => {
 //   await Font.loadAsync({
 //     'RobotoRegular': require('./assets/fonts/Roboto-Regular.ttf'),
@@ -14,6 +29,7 @@ const image = require('./images/avatar.png');
 // };
 
 export default function App() {
+  const[isLogin, setIsLogin] = useState(false);
   // const [isReady, setIsReady] = useState(false);
   
   // if (!isReady) {
@@ -27,66 +43,126 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <RegistrationScreen />
-      <StatusBar style='auto' />
+      <ImageBackground source={imageBG} style={styles.imageBG}>
+          {!isLogin ? <LoginScreen/> : <RegistrationScreen />}
+      </ImageBackground>
     </View>
   );
 };
 
-const RegistrationScreen = ()=> {
+const RegistrationScreen = () => {
+  const [value, setValue] = useState({});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  const inputHandler = (text) => setValue(text);
+
   return (
-  <View style={styles.container}>
-    <ImageBackground source={imageBG} resizeMode="cover" style={styles.imageBG}>
-      <Image source={image} style={styles.image}/>
-    <View style={styles.form}>
-    <Text style={styles.title}>Registration</Text>
-    <TextInput
-      placeholder='Login'
-      placeholderTextColor='#BDBDBD'
-      style={styles.input}
-    />
-    <TextInput
-      placeholder='E-mail'
-      placeholderTextColor='#BDBDBD'
-      style={styles.input}
-    />
-    <TextInput
-      autoComplete='off'
-      placeholder='Password'
-      secureTextEntry={true}
-      placeholderTextColor='#BDBDBD'
-      style={styles.input}
-    />
-    <TouchableHighlight 
-    // onPress={onPress}
+    <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-        <View style={styles.button}>
-          <Text style={styles.text}>Register</Text>
+      <View style={{...styles.form, marginTop: isShowKeyboard ? 43 : 219}} onChangeText={inputHandler}>
+        <View style={styles.avatar}>
+        {image && <Image source={image} style={styles.image}/>}
         </View>
-      </TouchableHighlight>
+        <Text style={styles.title}>Registration</Text>
+        <TextInput
+          name='name'
+          placeholder='Login'
+          placeholderTextColor='#BDBDBD'
+          style={styles.input}
+          onFocus={() => setIsShowKeyboard(true)}
+        />
+        <TextInput
+          name='email'
+          placeholder='Email address'
+          placeholderTextColor='#BDBDBD'
+          style={styles.input}
+          onFocus={() => setIsShowKeyboard(true)}
+        />
+        <TextInput
+          name='password'
+          autoComplete='off'
+          placeholder='Password'
+          secureTextEntry={true}
+          placeholderTextColor='#BDBDBD'
+          style={styles.input}
+          onFocus={() => setIsShowKeyboard(true)}
+        />
+        <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.btn}
+        onPress={keyboardHide}
+        >
+          <Text style={styles.text}>Sign in</Text>
+        </TouchableOpacity>
+        <Text style={{color: '#1B4371'}}>
+          Do you already have an account? Log in
+        </Text>
+      </View>
+    </KeyboardAvoidingView>
     </View>
-    </ImageBackground>
-  </View>
+  );
+};
+
+const LoginScreen = () => {
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  return (
+    <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View style={{...styles.form, paddingBottom: !isShowKeyboard ? 100 : 32}}>
+        <Text style={styles.title}>Login</Text>
+        <TextInput
+          placeholder='E-mail'
+          placeholderTextColor='#BDBDBD'
+          style={styles.input}
+          onFocus={() => setIsShowKeyboard(true)}
+        />
+        <TextInput
+          autoComplete='off'
+          placeholder='Password'
+          secureTextEntry={true}
+          placeholderTextColor='#BDBDBD'
+          style={styles.input}
+          onFocus={() => setIsShowKeyboard(true)}
+        />
+        <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.btn}
+        onPress={keyboardHide}
+        >
+          <Text style={styles.text}>Log in</Text>
+        </TouchableOpacity>
+        <Text style={{color:'#1B4371'}}>Don't have an account yet? Sign in</Text>
+      </View>
+    </KeyboardAvoidingView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    backgroundColor: '#ffffff',
   },
   imageBG:{
     flex: 1,
-    justifyContent: "center"
+    resizeMode: 'center',
+    justifyContent: 'flex-end',
   },
-  image: {
+  avatar: {
+    marginTop: -60,
     width: 120,
     height: 120,
-    alignSelf: 'center',
+    borderRadius: 16,
   },
   title: {
-    marginBottom: 32,
+    marginVertical: 32,
     // fontFamily: 'RobotoBold',
     fontWeight: 'bold',
     fontSize: 30,
@@ -95,10 +171,18 @@ const styles = StyleSheet.create({
   },
   form: {
     paddingHorizontal: 16,
-    borderTopStartRadius: 100,
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    alignItems: 'center',
+  },
+  image: {
+    alignSelf: 'center',
   },
   input: {
     padding: 16,
+    marginBottom: 16,
+    width: '100%',
     // fontFamily: 'RobotoRegular',
     fontSize: 16,
     height: 50,
@@ -106,17 +190,19 @@ const styles = StyleSheet.create({
     borderColor: '#E8E8E8',
     backgroundColor: '#F6F6F6',
     borderRadius: 8,
-    marginBottom: 16,
   },
   text: {
-    color: "#ffffff",
+    color: '#ffffff',
     fontSize: 16,
     textAlign: 'center',
   },
-  button: {
+  btn: {
     // fontFamily: 'RobotoBold',
+    marginTop: 35,
+    marginBottom: 16,
     paddingVertical: 16,
     paddingHorizontal: 32,
+    width: '100%',
     borderRadius: 100,
     backgroundColor: '#FF6C00',
   },
