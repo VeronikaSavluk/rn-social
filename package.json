@@ -7,17 +7,31 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "rndebugger-open"
+  },
+  "overrides": {
+    "react-devtools-core": "~4.25.0"
   },
   "dependencies": {
+    "@expo/webpack-config": "^0.17.2",
+    "@react-navigation/bottom-tabs": "^6.5.2",
+    "@react-navigation/native": "^6.1.1",
+    "@react-navigation/native-stack": "^6.9.7",
+    "@react-navigation/stack": "^6.3.10",
     "expo": "~47.0.8",
-    "expo-font": "^11.0.1",
+    "expo-font": "~11.0.1",
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
-    "react-native": "0.70.5"
+    "react-dom": "18.1.0",
+    "react-native": "0.70.5",
+    "react-native-safe-area-context": "^4.4.1",
+    "react-native-screens": "^3.18.2",
+    "react-native-web": "~0.18.9"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "react-native-debugger-open": "^0.3.25"
   },
   "private": true
 }
