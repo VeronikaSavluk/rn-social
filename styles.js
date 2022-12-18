@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     },
     imageBG:{
       flex: 1,
-      resizeMode: 'center',
+      resizeMode: 'cover',
       justifyContent: 'flex-end',
     },
     avatar: {
@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
       width: 120,
       height: 120,
       borderRadius: 16,
+      backgroundColor: '#D3D3D3',
     },
     title: {
       marginVertical: 32,
@@ -32,6 +33,9 @@ export const styles = StyleSheet.create({
     },
     image: {
       alignSelf: 'center',
+      resizeMode: 'contain',
+      width: '100%',
+      height: '100%',
     },
     icon: {
       width: 40,
@@ -69,4 +73,34 @@ export const styles = StyleSheet.create({
       borderRadius: 100,
       backgroundColor: '#FF6C00',
     },
+    camera: {
+      height: 240,
+      marginTop: 32,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginHorizontal: 16,
+      borderColor: 'red',
+      borderWidth: 5,
+      borderRadius: 8,
+    },
+    takePhotoView: {
+      position: 'absolute',
+      top: 32,
+      left: 16,
+    },
+    snapContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 60,
+      height: 60,
+      borderRadius: 50,
+      backgroundColor: '#ffffff',
+    },
+    snap: {
+      width: 24,
+      height: 24,
+    },
+    map: {
+      flex: 1,
+    }
 });
