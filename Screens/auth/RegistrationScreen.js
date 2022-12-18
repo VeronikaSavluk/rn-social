@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   Keyboard,
@@ -11,6 +12,8 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+import {authSignUpUser} from '../../redux/auth/authOperations';
 
 import { styles } from '../../styles';
 import initialState from '../../templates/initialstate';
@@ -20,42 +23,59 @@ import defaultImage from '../../images/avatar_default.png';
 import image from '../../images/avatar.png';
 
 export default function RegistrationScreen({navigation}) {
+  
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [dimensions, setDimensions] = useState(Dimensions.get('window').width);
 
-  const keyboardHide = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width;
+      setDimensions(width);
+    };
+
+    Dimensions.addEventListener("change", onChange);
+    
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
+  }, []);
+
+  const handleSubmit = () => {
       setIsShowKeyboard(false);
       Keyboard.dismiss();
-      console.log(state);
+      dispatch(authSignUpUser(state))
       setState(initialState);
     };
-console.log(Platform)
+
   return (
-    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <TouchableWithoutFeedback onPress={handleSubmit}>
       <View style={styles.container}>
         <ImageBackground source={imageBG} style={styles.imageBG}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
             <View style={{...styles.form,
-              paddingBottom: 45,
-              marginBottom: isShowKeyboard ? -142 : 0
+              paddingBottom: isShowKeyboard ? 145 : 45,
+              width: dimensions,
             }}>
               <View style={styles.avatar}>
-                {image 
+                {!image 
                   ? <Image source={image} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
               }
               </View>
               <Text style={styles.title}>Registration</Text>
               <TextInput
-                name='name'
-                value={state.name}
+                name='nickname'
+                value={state.nickname}
                 placeholder='Login'
                 placeholderTextColor='#BDBDBD'
                 style={styles.input}
                 onFocus={() => setIsShowKeyboard(true)}
-                onChangeText={(value) => setState(prevState => ({...prevState, name: value}))}
+                onChangeText={(value) => setState(prevState => ({...prevState, nickname: value}))}
               />
               <TextInput
                 name='email'
@@ -80,7 +100,7 @@ console.log(Platform)
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.btn}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.text}>Sign up</Text>
               </TouchableOpacity>
