@@ -6,8 +6,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 
-import RegistrationScreen from './Screens/RegistrationScreen/RegistrationScreen';
-import LoginScreen from './Screens/LoginScreen/LoginScreen';
+import RegistrationScreen from './Screens/auth/RegistrationScreen';
+import LoginScreen from './Screens/auth/LoginScreen';
 import ProfileScreen from './Screens/mainScreen/ProfileScreen';
 import CreatePostsScreen from './Screens/mainScreen/CreatePostsScreen';
 import PostsScreen from './Screens/mainScreen/PostsScreen';
@@ -36,39 +36,39 @@ const useRoute = (isAuth) => {
   };
 
   return (
-    <MainTab.Navigator tabBarOptions={{showLabel: false}}>
+    <MainTab.Navigator screenOptions={{tabBarShowLabel: false}}>
       <MainTab.Screen
+        name='Posts'
+        component={PostsScreen}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>
-              <Image source={posts}/>
+              <Image source={posts} size={size} color={color}/>
             </View>
-          )
+          ),
         }}
-        name='Posts'
-        component={PostsScreen}
       />
       <MainTab.Screen
+        name='CreatePosts'
+        component={CreatePostsScreen}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.plusIcon}>
-              <Image source={plus}/>
+              <Image source={plus} size={size} color={color} />
             </View>
-          )
+          ),
         }}
-        name='CreatePosts'
-        component={CreatePostsScreen}
         />
       <MainTab.Screen
+        name='Profile'
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>
-              <Image source={user}/>
+              <Image source={user} size={size} color={color}/>
             </View>
-          )
+          ),
         }}
-        name='Profile'
-        component={ProfileScreen}
       />
     </MainTab.Navigator>
   );
