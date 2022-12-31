@@ -10,6 +10,8 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
+import {useDispatch} from 'react-redux';
+import {authSignInUser} from '../../redux/auth/authOperations';
 
 import { styles } from '../../styles';
 import imageBG from '../../images/bg-photo.png';
@@ -19,12 +21,19 @@ export default function LoginScreen({navigation}) {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
-  const keyboardHide = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+    dispatch(authSignInUser(state));
     setState(initialState);
   };
+
+const keyboardHide = () => {
+  setIsShowKeyboard(false);
+  Keyboard.dismiss();
+};
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -62,7 +71,7 @@ export default function LoginScreen({navigation}) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.btn}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.text}>Log in</Text>
               </TouchableOpacity>

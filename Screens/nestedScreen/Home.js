@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from "react";
 import {
+  Button,
   Image,
   View,
-  Text,
   FlatList,
 } from "react-native";
+
 import {styles} from '../../styles';
 
-const Home = ({route}) => {
+const Home = ({route, navigation}) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -18,12 +19,13 @@ const Home = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()} renderItem={({item}) => (
-        <View style={{marginBottom: 32}}>
-          <Image source={{uri: item.photo}} style={{marginHorizontal: 10, height: 240}}/>
-        </View>
-      )} />
-      <Text>Home</Text>
+    <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()} renderItem={({item}) => (
+      <View style={{marginBottom: 32}}>
+        <Image source={{uri: item.photo}} style={{marginHorizontal: 10, height: 240}}/>
+      </View>
+    )} />
+    <Button title='go to map' onPress={() => navigation.navigate('Map')} />
+    <Button title='go to comments' onPress={() => navigation.navigate('Comments')} />
     </View>
   );
 };

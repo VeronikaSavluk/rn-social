@@ -2,9 +2,11 @@ import React from "react";
 import {View} from 'react-native';
 import MapView, { Marker } from "react-native-maps";
 
+import {styles} from '../../styles';
+
 const MapScreen = () => {
 	return (
-		<View>
+		<View style={styles.container}>
 			<MapView
         style={styles.map}
         region={{
@@ -19,9 +21,9 @@ const MapScreen = () => {
         onRegionChange={() => console.log("Region change")}
       >
         <Marker
-          title=""
+          title="I'm here"
           coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-          description=''
+          description='Hello'
         />
       </MapView>
 		</View>

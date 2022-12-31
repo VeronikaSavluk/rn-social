@@ -46,12 +46,13 @@ export default function RegistrationScreen({navigation}) {
   const handleSubmit = () => {
       setIsShowKeyboard(false);
       Keyboard.dismiss();
-      dispatch(authSignUpUser(state))
+      console.log('state', state);
+      dispatch(authSignUpUser(state));
       setState(initialState);
     };
 
   return (
-    <TouchableWithoutFeedback onPress={handleSubmit}>
+    <TouchableWithoutFeedback>
       <View style={styles.container}>
         <ImageBackground source={imageBG} style={styles.imageBG}>
           <KeyboardAvoidingView
