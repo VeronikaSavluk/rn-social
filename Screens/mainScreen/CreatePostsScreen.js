@@ -7,9 +7,11 @@ import {
 } from "react-native";
 import {Camera} from 'expo-camera';
 import * as Location from "expo-location";
+import db from '../../firebase/config';
 
 import {styles} from '../../styles';
 import cameraIcon from '../../images/camera.png';
+import { getStorage } from "firebase/storage";
 
 const CreatePostsScreen = ({navigation}) => {
   const [camera, setCamera] = useState(null);
@@ -34,9 +36,19 @@ const CreatePostsScreen = ({navigation}) => {
   }, []);
 
   const uploadPhoto = () => {
+    uploadPhotoToServer();
     navigation.navigate('Home', {photo});
   };
   
+  const uploadPhotoToServer = async() => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    
+    const uniquePostId = Date.now().toString();
+    const data = await db.storage().ref(`postImage/${uniquePostId}`).put(file);
+    console.log('data', data);
+  };
+
   return (
     <View style={styles.createContainer}>
       <Camera style={styles.camera} ref={setCamera}>
