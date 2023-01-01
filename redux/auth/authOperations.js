@@ -1,14 +1,29 @@
 import db from '../../firebase/config';
 import {authSlice} from './authReduser';
 
+const {
+	updateUserProfile,
+	authSignOut,
+	authStateChange
+} = authSlice.actions;
+
 export const authSignUpUser = ({nickname, email, password}) => async (
 	dispatch, getState) => {
 	try {
 		const {user} = await db
 		.auth()
 		.createUserWithEmailAndPassword(email, password);
-		dispatch(authSlice.actions.updateUserProfile({userId: user.uid}))
 		console.log('user', user);
+		await user.updateProfile({
+			displayName: nickname,
+		});
+
+		const {uid, displayName} = await db.auth().currentUser;
+
+		dispatch(updateUserProfile({
+			userId: uid,
+			nickname: displayName,
+		}));
 	} catch (error) {
 		console.log(error.message);
 	}
@@ -19,12 +34,30 @@ export const authSignInUser = ({email, password}) => async (dispatch, getState) 
 		const {user} = await db
 		.auth()
 		.signInWithEmailAndPassword(email, password);
-		dispatch(authSlice.actions.updateUserProfile({userId: user.uid}))
+		dispatch(updateUserProfile({userId: user.uid}))
 		console.log('user', user);
 	} catch (error) {
 		console.log(error.message);
 		console.log(error.code);
-	}
+	};
 };
 
-export const authSignOutUser = async (dispatch, getState) => {};
+export const authSignOutUser = () => async (
+dispatch, getState) => {
+ await db.auth().signOut();
+ dispatch(authSignOut());
+	};
+
+export const authStateChangeUser = () => async (
+	dispatch, getState) => {
+	await db.auth().onAuthStateChanged((user) => {
+		if(user) {
+			const userUpdateProfile = {
+				userId: user.uid,
+				nickname: user.displayName,
+			};
+			dispatch(updateUserProfile(userUpdateProfile))
+			dispatch(authStateChange({stateChange: true}))
+		};
+	});
+};

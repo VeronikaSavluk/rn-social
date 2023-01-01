@@ -1,20 +1,12 @@
 import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 // import { AppLoading } from 'expo';
 // import loadFonts from './templates/font';
-import useRoute from './router';
 import {Provider} from 'react-redux';
 import {store} from './redux/store';
-import db from './firebase/config';
+import Main from './components/Main';
 
 export default function App() {
   // const [isReady, setIsReady] = useState(false);
-  const [user, setUser] = useState(null);
-
-  db.auth().onAuthStateChanged((user) => setUser(user));
-console.log(user.uid)
-  const routing = useRoute(user);
-
   
   // if (!isReady) {
   //   return (
@@ -27,7 +19,7 @@ console.log(user.uid)
 
   return (
     <Provider store={store}>
-    <NavigationContainer>{routing}</NavigationContainer>
+    <Main />
     </Provider>
   );
 };
