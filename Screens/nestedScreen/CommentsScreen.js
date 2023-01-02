@@ -37,7 +37,7 @@ const CommentsScreen = ({route}) => {
     .doc(postId)
     .collection('comments')
     .onSnapshot((data) => 
-    setComments(data.docs.map(doc => ({...doc.data(), id: DOMRectReadOnly.id})))
+    setComments(data.docs.map(doc => ({...doc.data(), id: doc.id})))
     );
   };
 
