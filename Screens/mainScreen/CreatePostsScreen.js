@@ -9,22 +9,26 @@ import {
 } from "react-native";
 import {Camera} from 'expo-camera';
 import * as Location from "expo-location";
+import * as MediaLibrary from "expo-media-library";
 import db from '../../firebase/config';
 
 import {styles} from '../../styles';
 import cameraIcon from '../../images/camera.png';
+import locationIcon from '../../images/map-pin.png';
 
 const CreatePostsScreen = ({navigation}) => {
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [comment, setComment] = useState('');
+  const [locationTitle, setLocationTitle] = useState('');
   const [location, setLocation] = useState(null);
-  
+
   const {userId, nickname} = useSelector(state => state.auth);
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
       };
@@ -36,6 +40,7 @@ const CreatePostsScreen = ({navigation}) => {
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
+    await MediaLibrary.createAssetAsync(photo.uri);
     setPhoto(photo.uri);
   };
   
@@ -48,7 +53,7 @@ const CreatePostsScreen = ({navigation}) => {
     const photo = await uploadPhotoToServer();
     await db.firestore()
     .collection('posts')
-    .add({photo, comment, location: location.coords, userId, nickname});
+    .add({photo, comment, locationTitle, location: location.coords, userId, nickname});
   };
 
   const uploadPhotoToServer = async() => {
@@ -79,13 +84,24 @@ const CreatePostsScreen = ({navigation}) => {
           <Image source={cameraIcon} style={styles.snap}/>
         </TouchableOpacity>
       </Camera>
+      <Text style={{color:'#BDBDBD', marginBottom: 32}}>Edit photo</Text>
       <View>
-        <Text style={{color:'#BDBDBD'}} >Upload photo</Text>
-        <TextInput style={styles.input} placeholder="Name..." onChangeText={setComment}/>
-        <TextInput style={styles.input} placeholder="Location..."/>
+        <TextInput style={styles.input}
+        placeholder="Name..."
+        onChangeText={setComment}
+        />
+        <View style={{...styles.postIconContainer, paddingHorizontal: 0}}>
+        <TextInput style={{...styles.input, paddingLeft: 35}}
+        placeholder="Location..."
+        onChangeText={setLocationTitle}
+        />
+        <TouchableOpacity style={styles.postIconLocation} onPress={() => navigation.navigate('Map', {location: item.location})}>
+        <Image source={locationIcon}/>
+        </TouchableOpacity>
+        </View>
       </View>
       <TouchableOpacity style={styles.btn} onPress={uploadPhoto}>
-        <Text>Uploud photo</Text>
+        <Text style={{...styles.text, color: '#ffffff'}}>Publish</Text>
       </TouchableOpacity>
     </View>
   );

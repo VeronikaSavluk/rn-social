@@ -3,10 +3,14 @@ import {
   Button,
   Image,
   Text,
+  Title,
+  TouchableOpacity,
   View,
   FlatList,
 } from "react-native";
 import db from '../../firebase/config';
+import locationIcon from '../../images/map-pin.png';
+import commentIcon from '../../images/message-circle.png';
 import {styles} from '../../styles';
 
 const Home = ({route, navigation}) => {
@@ -26,16 +30,21 @@ const Home = ({route, navigation}) => {
   
   return (
     <View style={styles.container}>
-    <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()} renderItem={({item}) => (
+    <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()}
+    renderItem={({item}) => (
       <View style={{marginBottom: 32}}>
         <Image source={{uri: item.photo}} style={{marginHorizontal: 10, height: 240}}/>
-        <View>
-          <Button title='Comments'
-          onPress={() => navigation.navigate('Comments', {postId: item.id})}/>
-        </View>
-        <View>
-          <Button title='location'
-          onPress={() => navigation.navigate('Map', {location: item.location})}/>
+        <View style={styles.infoPost}>
+        <TouchableOpacity onPress={() => navigation.navigate('Comments', {postId: item.id})} 
+        style={styles.postIconContainer}>
+        <Image source={commentIcon} style={styles.postIcon}/>
+        <Text>{item.comment.length}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Map', {location: item.location})} 
+        style={{...styles.postIconContainer, width: 255}}>
+        <Image source={locationIcon} style={styles.postIcon}/>
+        {item.locationTitle && <Title>{item.locationTitle}</Title>}
+        </TouchableOpacity>
         </View>
       </View>
     )} />

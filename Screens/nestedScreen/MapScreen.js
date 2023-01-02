@@ -6,10 +6,12 @@ import {styles} from '../../styles';
 
 const MapScreen = ({route}) => {
 	const comment = route.params.comment;
+  const locationTitle = route.params.locationTitle;
   const {
     latitude,
     longitude
   } = route.params.location;
+
   return (
 		<View style={styles.container}>
 			<MapView
@@ -26,7 +28,7 @@ const MapScreen = ({route}) => {
         onRegionChange={() => console.log("Region change")}
       >
         <Marker
-          title="I'm here"
+          title={locationTitle}
           coordinate={{ latitude, longitude }}
           description={comment}
         />
