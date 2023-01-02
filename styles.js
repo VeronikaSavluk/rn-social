@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
       borderRadius: 8,
     },
     text: {
-      color: '#ffffff',
+      color: '#000000',
       fontSize: 16,
       textAlign: 'center',
     },
