@@ -5,6 +5,10 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ffffff',
     },
+    createContainer: {
+      flex: 1,
+      padding: 16,
+    },
     imageBG:{
       flex: 1,
       resizeMode: 'cover',
@@ -46,7 +50,7 @@ export const styles = StyleSheet.create({
       width: 70,
       height: 40,
     },
-    input: {
+    inputAuth: {
       padding: 16,
       marginBottom: 16,
       width: '100%',
@@ -57,6 +61,29 @@ export const styles = StyleSheet.create({
       borderColor: '#E8E8E8',
       backgroundColor: '#F6F6F6',
       borderRadius: 8,
+    },
+    input: {
+      padding: 16,
+      marginBottom: 16,
+      // fontFamily: 'Roboto-Regular',
+      width: '100%',
+      fontSize: 16,
+      height: 50,
+      borderWidth: 1,
+      borderColor: 'transparent',
+      borderBottomColor: '#E8E8E8',
+    },
+    password: {
+      position: 'relative',
+      width: '100%',
+    },
+    showPassword: {
+      position: 'absolute',
+      top: 12,
+      right: 25,
+    },
+    showBtn: {
+      color: '#1B4371',
     },
     text: {
       color: '#000000',
@@ -78,10 +105,9 @@ export const styles = StyleSheet.create({
       marginTop: 32,
       justifyContent: 'center',
       alignItems: 'center',
-      marginHorizontal: 16,
-      borderColor: 'red',
-      borderWidth: 5,
+      borderColor: 'white',
       borderRadius: 8,
+      overflow: 'hidden',
     },
     takePhotoView: {
       position: 'absolute',
@@ -99,6 +125,25 @@ export const styles = StyleSheet.create({
     snap: {
       width: 24,
       height: 24,
+    },
+    postIconContainer: {
+      position: 'relative',
+      paddingHorizontal: 16,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    postIconLocation: {
+      position: 'absolute',
+      top: 12,
+      left: 10,
+    },
+    postIcon: {
+      width: 24,
+      height: 24,
+    },
+    infoPost: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     map: {
       width: Dimensions.get("window").width,

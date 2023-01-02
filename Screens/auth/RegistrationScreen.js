@@ -27,6 +27,7 @@ export default function RegistrationScreen({navigation}) {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dimensions, setDimensions] = useState(Dimensions.get('window').width);
+  const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -43,10 +44,13 @@ export default function RegistrationScreen({navigation}) {
     };
   }, []);
 
+  const toggleSecureTextEntry = () => {
+    setIsSecureTextEntry((prevState) => !prevState);
+  };
+
   const handleSubmit = () => {
       setIsShowKeyboard(false);
       Keyboard.dismiss();
-      console.log('state', state);
       dispatch(authSignUpUser(state));
       setState(initialState);
     };
@@ -74,7 +78,7 @@ export default function RegistrationScreen({navigation}) {
                 value={state.nickname}
                 placeholder='Login'
                 placeholderTextColor='#BDBDBD'
-                style={styles.input}
+                style={styles.inputAuth}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) => setState(prevState => ({...prevState, nickname: value}))}
               />
@@ -83,21 +87,30 @@ export default function RegistrationScreen({navigation}) {
                 value={state.email}
                 placeholder='Email address'
                 placeholderTextColor='#BDBDBD'
-                style={styles.input}
+                style={styles.inputAuth}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) => setState(prevState => ({...prevState, email: value}))}
               />
+              <View style={styles.password}>
               <TextInput
                 name='password'
                 value={state.password}
                 autoComplete='off'
                 placeholder='Password'
-                secureTextEntry={true}
+                secureTextEntry={isSecureTextEntry}
                 placeholderTextColor='#BDBDBD'
-                style={styles.input}
+                style={styles.inputAuth}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) => setState(prevState => ({...prevState, password: value}))}
               />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.showPassword}
+                onPress={toggleSecureTextEntry}
+              >
+                <Text style={styles.showBtn}>Show</Text>
+              </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.btn}

@@ -20,6 +20,7 @@ import initialState from '../../templates/initialstate';
 export default function LoginScreen({navigation}) {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -30,10 +31,14 @@ export default function LoginScreen({navigation}) {
     setState(initialState);
   };
 
-const keyboardHide = () => {
-  setIsShowKeyboard(false);
-  Keyboard.dismiss();
-};
+  const toggleSecureTextEntry = () => {
+    setIsSecureTextEntry((prevState) => !prevState);
+  };
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
@@ -53,21 +58,30 @@ const keyboardHide = () => {
                 value={state.email}
                 placeholder='E-mail'
                 placeholderTextColor='#BDBDBD'
-                style={styles.input}
+                style={styles.inputAuth}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) => setState(prevState => ({...prevState, email: value}))}
               />
+              <View style={styles.password}>
               <TextInput
                 name='password'
                 value={state.password}
                 autoComplete='off'
                 placeholder='Password'
-                secureTextEntry={true}
+                secureTextEntry={isSecureTextEntry}
                 placeholderTextColor='#BDBDBD'
-                style={styles.input}
+                style={styles.inputAuth}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) => setState(prevState => ({...prevState, password: value}))}
               />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.showPassword}
+                onPress={toggleSecureTextEntry}
+              >
+                <Text style={styles.showBtn}>Show</Text>
+              </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.btn}
