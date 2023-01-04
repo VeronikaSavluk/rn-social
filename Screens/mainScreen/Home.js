@@ -2,20 +2,22 @@ import React from "react";
 import {moduleName} from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Home from "../nestedScreen/Home";
+import PostsScreen from "../nestedScreen/PostsScreen";
 import MapScreen from '../nestedScreen/MapScreen';
 import CommentsScreen from '../nestedScreen/CommentsScreen';
 
+import {styles} from '../../styles';
+
 const NestedScreen = createStackNavigator();
 
-const PostsScreen = () => {
+const Home = () => {
   return (
-      <NestedScreen.Navigator>
-      <NestedScreen.Screen name='Home' component={Home}/>
+      <NestedScreen.Navigator style={styles.screenContainer}>
+      <NestedScreen.Screen name='PostsScreen' component={PostsScreen}/>
       <NestedScreen.Screen name='Comments' component={CommentsScreen} />
       <NestedScreen.Screen name='Map' component={MapScreen} />
     </NestedScreen.Navigator>
   );
 };
 
-export default PostsScreen;
+export default Home;

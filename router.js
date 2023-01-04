@@ -10,7 +10,7 @@ import RegistrationScreen from './Screens/auth/RegistrationScreen';
 import LoginScreen from './Screens/auth/LoginScreen';
 import ProfileScreen from './Screens/mainScreen/ProfileScreen';
 import CreatePostsScreen from './Screens/mainScreen/CreatePostsScreen';
-import PostsScreen from './Screens/mainScreen/PostsScreen';
+import Home from './Screens/mainScreen/Home';
 import {styles} from './styles';
 
 import posts from './images/grid.png';
@@ -39,7 +39,7 @@ const useRoute = (isAuth) => {
     <MainTab.Navigator screenOptions={{tabBarShowLabel: false}}>
       <MainTab.Screen
         name='Posts'
-        component={PostsScreen}
+        component={Home}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>

@@ -3,6 +3,7 @@ import db from '../../firebase/config';
 import {useSelector} from 'react-redux';
 import {
   FlatList,
+  Image,
   View,
   SafeAreaView,
   Text,
@@ -12,12 +13,13 @@ import {
 
 import {styles} from '../../styles';
 
+
 const CommentsScreen = ({route}) => {
-  const {postId} = route.params;
+  const {postId, photo} = route.params;
   const {nickname} = useSelector((state) => state.auth);
-  
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     getComments();
@@ -29,6 +31,7 @@ const CommentsScreen = ({route}) => {
     .doc(postId)
     .collection('comments')
     .add({comment, nickname});
+    setIsDisabled(true);
   };
 
   const getComments = async() => {
@@ -42,7 +45,10 @@ const CommentsScreen = ({route}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screenContainer}>
+      <Image source={{uri: photo}}
+      style={{height: 240, borderRadius: 8, marginBottom: 32}}
+      />
       <SafeAreaView style={styles.container}>
       <FlatList
         data={comments}
@@ -55,10 +61,18 @@ const CommentsScreen = ({route}) => {
         keyExtractor={item => item.id}
       />
     </SafeAreaView>
-      <TextInput style={styles.input} placeholder="Comment..." onChangeText={setComment}/>
-      <TouchableOpacity style={styles.input} onPress={createComment}>
-        <Text>Add comment</Text>
-      </TouchableOpacity>
+      <TextInput style={styles.input}
+      placeholder="Comment..."
+      onChangeText={(value) => {setComment(value), setIsDisabled(false)}}/>
+      <TouchableOpacity disabled={isDisabled}
+      style={{...styles.btn, backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'}}
+      onPress={createComment}
+      >
+        <Text
+        style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}
+        >Add comment
+        </Text>
+      </TouchableOpacity>      
     </View>
   );
 };

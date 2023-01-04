@@ -19,8 +19,9 @@ import { styles } from '../../styles';
 import initialState from '../../templates/initialstate';
 
 import imageBG from '../../images/bg-photo.png';
+import add from '../../images/add.png';
+import edit from '../../images/edit.png';
 import defaultImage from '../../images/avatar_default.png';
-import image from '../../images/avatar.png';
 
 export default function RegistrationScreen({navigation}) {
   
@@ -67,10 +68,15 @@ export default function RegistrationScreen({navigation}) {
               width: dimensions,
             }}>
               <View style={styles.avatar}>
-                {!image 
-                  ? <Image source={image} style={styles.image}/>
+                {!state.image 
+                  ? <Image source={state.image} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
-              }
+                }
+                <TouchableOpacity onPress={() => setState(prevState => ({...prevState, image: value}))}>
+                  {!state.image
+                  ? <Image source={add} style={styles.user}/>
+                  : <Image source={edit} style={styles.user}/>}
+                </TouchableOpacity>
               </View>
               <Text style={styles.title}>Registration</Text>
               <TextInput
