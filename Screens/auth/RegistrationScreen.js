@@ -29,8 +29,16 @@ export default function RegistrationScreen({navigation}) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [dimensions, setDimensions] = useState(Dimensions.get('window').width);
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const {email, password} = state;
+    if(email !== '' && password !== ''){
+      setIsDisabled(false);
+    };
+  }, [state]);
 
   useEffect(() => {
     const onChange = () => {
@@ -54,6 +62,7 @@ export default function RegistrationScreen({navigation}) {
       Keyboard.dismiss();
       dispatch(authSignUpUser(state));
       setState(initialState);
+      setIsDisabled(true);
     };
 
   return (
@@ -68,7 +77,7 @@ export default function RegistrationScreen({navigation}) {
               width: dimensions,
             }}>
               <View style={styles.avatar}>
-                {!state.image 
+                {state.image 
                   ? <Image source={state.image} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
                 }
@@ -118,11 +127,12 @@ export default function RegistrationScreen({navigation}) {
               </TouchableOpacity>
               </View>
               <TouchableOpacity
+                disabled={isDisabled}
+                style={{...styles.btn, backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'}}
                 activeOpacity={0.8}
-                style={styles.btn}
                 onPress={handleSubmit}
               >
-                <Text style={styles.text}>Sign up</Text>
+                <Text style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}>Sign up</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigation.navigate('Login')}

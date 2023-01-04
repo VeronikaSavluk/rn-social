@@ -41,6 +41,7 @@ const useRoute = (isAuth) => {
         name='Posts'
         component={Home}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>
               <Image source={posts} size={size} color={color}/>
@@ -52,6 +53,7 @@ const useRoute = (isAuth) => {
         name='CreatePosts'
         component={CreatePostsScreen}
         options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.plusIcon}>
               <Image source={plus} size={size} color={color} />
@@ -63,6 +65,7 @@ const useRoute = (isAuth) => {
         name='Profile'
         component={ProfileScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>
               <Image source={user} size={size} color={color}/>

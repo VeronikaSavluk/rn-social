@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ImageBackground,
   Keyboard,
@@ -21,8 +21,16 @@ export default function LoginScreen({navigation}) {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const {email, password} = state;
+    if(email !== '' && password !== ''){
+      setIsDisabled(false);
+    };
+  }, [state]);
 
   const handleSubmit = () => {
     setIsShowKeyboard(false);
@@ -84,10 +92,11 @@ export default function LoginScreen({navigation}) {
               </View>
               <TouchableOpacity
                 activeOpacity={0.8}
-                style={styles.btn}
+                disabled={isDisabled}
+                style={{...styles.btn, backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'}}
                 onPress={handleSubmit}
               >
-                <Text style={styles.text}>Log in</Text>
+                <Text style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}>Log in</Text>
               </TouchableOpacity>
               <TouchableOpacity
               onPress={() => navigation.navigate('Registration')}

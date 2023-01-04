@@ -44,9 +44,14 @@ export const styles = StyleSheet.create({
       height: 25,
       borderRadius: 50,
     },
+    userBox: {
+      flexDirection: 'row',
+      height: 60,
+      alignItems: 'center',
+      marginBottom: 8,
+    },
     title: {
       marginVertical: 32,
-      // fontFamily: 'Roboto-Bold',
       fontSize: 30,
       lineHeight: 35,
       textAlign: 'center',
@@ -77,7 +82,6 @@ export const styles = StyleSheet.create({
       padding: 16,
       marginBottom: 16,
       width: '100%',
-      // fontFamily: 'Roboto-Regular',
       fontSize: 16,
       height: 50,
       borderWidth: 1,
@@ -88,7 +92,6 @@ export const styles = StyleSheet.create({
     input: {
       padding: 16,
       marginBottom: 16,
-      // fontFamily: 'Roboto-Regular',
       width: '100%',
       fontSize: 16,
       height: 50,
@@ -114,7 +117,6 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
     },
     btn: {
-      // fontFamily: 'Roboto-Regular',
       marginTop: 19,
       marginBottom: 16,
       paddingVertical: 16,

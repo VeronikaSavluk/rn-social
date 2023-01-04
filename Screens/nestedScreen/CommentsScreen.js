@@ -16,10 +16,11 @@ import {styles} from '../../styles';
 
 const CommentsScreen = ({route}) => {
   const {postId, photo} = route.params;
-  const {nickname} = useSelector((state) => state.auth);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
   const [isDisabled, setIsDisabled] = useState(true);
+
+  const {nickname} = useSelector((state) => state.auth);
 
   useEffect(() => {
     getComments();

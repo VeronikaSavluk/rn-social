@@ -25,7 +25,7 @@ const ProfileScreen = ({navigation}) => {
   const [userPosts, setUserPosts] = useState([]);
 
   const dispatch = useDispatch();
-  const {userId, image, nickname} = useSelector((state) => state.auth);
+  const {userId, nickname, image} = useSelector((state) => state.auth);
 
   useEffect(() => {
     getUserPosts();

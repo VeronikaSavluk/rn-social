@@ -24,7 +24,7 @@ const CreatePostsScreen = ({navigation}) => {
   const [location, setLocation] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const {userId, nickname} = useSelector(state => state.auth);
+  const {userId} = useSelector(state => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -48,7 +48,7 @@ const CreatePostsScreen = ({navigation}) => {
   
   const uploadPhoto = () => {
     uploadPostToServer();
-    navigation.navigate('Home', {photo});
+    navigation.navigate('PostsScreen', {photo});
     setIsDisabled(true);
   };
   
@@ -56,7 +56,7 @@ const CreatePostsScreen = ({navigation}) => {
     const photo = await uploadPhotoToServer();
     await db.firestore()
     .collection('posts')
-    .add({photo, title, locationTitle, location: location.coords, userId, nickname});
+    .add({photo, title, locationTitle, location: location.coords, userId});
   };
 
   const uploadPhotoToServer = async() => {
