@@ -1,7 +1,8 @@
 const initialState = {
     nickname: '',
     email: '',
-    password: ''
+    password: '',
+    image: null,
 };
 
 export default initialState;
