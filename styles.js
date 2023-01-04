@@ -5,9 +5,23 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#ffffff',
     },
-    createContainer: {
+    screenContainer: {
       flex: 1,
       padding: 16,
+      backgroundColor: '#ffffff',
+    },
+    profileContainer: {
+      position: 'relative',
+      marginTop: 239,
+      backgroundColor: '#ffffff',
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      alignItems: 'center',
+    },
+    logOut: {
+      position: 'absolute',
+      top: 20,
+      left: 170,
     },
     imageBG:{
       flex: 1,
@@ -15,11 +29,20 @@ export const styles = StyleSheet.create({
       justifyContent: 'flex-end',
     },
     avatar: {
+      position: 'relative',
       marginTop: -60,
       width: 120,
       height: 120,
       borderRadius: 16,
       backgroundColor: '#D3D3D3',
+    },
+    user: {
+      position: 'absolute',
+      bottom: 20,
+      right: -13,
+      width: 25,
+      height: 25,
+      borderRadius: 50,
     },
     title: {
       marginVertical: 32,
@@ -92,17 +115,16 @@ export const styles = StyleSheet.create({
     },
     btn: {
       // fontFamily: 'Roboto-Regular',
-      marginTop: 35,
+      marginTop: 19,
       marginBottom: 16,
       paddingVertical: 16,
       paddingHorizontal: 32,
       width: '100%',
       borderRadius: 100,
-      backgroundColor: '#FF6C00',
     },
     camera: {
       height: 240,
-      marginTop: 32,
+      marginTop: 16,
       justifyContent: 'center',
       alignItems: 'center',
       borderColor: 'white',
@@ -128,7 +150,6 @@ export const styles = StyleSheet.create({
     },
     postIconContainer: {
       position: 'relative',
-      paddingHorizontal: 16,
       flexDirection: 'row',
       alignItems: 'center',
     },
