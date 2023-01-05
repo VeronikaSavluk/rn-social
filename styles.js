@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     logOut: {
       position: 'absolute',
       top: 20,
-      left: 170,
+      left: 150,
     },
     imageBG:{
       flex: 1,
