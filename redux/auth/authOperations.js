@@ -15,15 +15,16 @@ export const authSignUpUser = ({nickname, email, password, image}) => async (
 		.createUserWithEmailAndPassword(email, password);
 		await user.updateProfile({
 			displayName: nickname,
+			photoURL: image,
 		});
 
-		const {uid, displayName} = await db.auth().currentUser;
+		const {uid, displayName, photoURL} = await db.auth().currentUser;
 
 		dispatch(updateUserProfile({
 			userId: uid,
 			nickname: displayName,
 			email: email,
-			image: image,
+			image: photoURL,
 		}));
 	} catch (error) {
 		console.log(error.message);
@@ -56,7 +57,7 @@ export const authStateChangeUser = () => async (
 				userId: user.uid,
 				nickname: user.displayName,
 				email: user.email,
-				image: user.image,
+				image: user.photoURL,
 			};
 			dispatch(updateUserProfile(userUpdateProfile))
 			dispatch(authStateChange({stateChange: true}))
