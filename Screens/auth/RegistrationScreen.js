@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import {useDispatch} from 'react-redux';
 import {authSignUpUser} from '../../redux/auth/authOperations';
 
@@ -32,6 +33,20 @@ export default function RegistrationScreen({navigation}) {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const dispatch = useDispatch();
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    });
+    
+    if(!result.canceled){
+      setState((prevState) => ({...prevState, image: result.assets[0].uri}));
+    } else {
+      alert(`You didn't select any Image.`);
+    };
+  };
 
   useEffect(() => {
     const {email, password} = state;
@@ -81,7 +96,7 @@ export default function RegistrationScreen({navigation}) {
                   ? <Image source={state.image} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
                 }
-                <TouchableOpacity onPress={() => setState(prevState => ({...prevState, image: value}))}>
+                <TouchableOpacity onPress={pickImage}>
                   {!state.image
                   ? <Image source={add} style={styles.user}/>
                   : <Image source={edit} style={styles.user}/>}

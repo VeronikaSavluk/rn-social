@@ -10,6 +10,7 @@ import {
 import {Camera} from 'expo-camera';
 import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from 'expo-image-picker';
 import db from '../../firebase/config';
 
 import {styles} from '../../styles';
@@ -45,11 +46,27 @@ const CreatePostsScreen = ({navigation}) => {
     setPhoto(photo.uri);
     setIsDisabled(false);
   };
-  
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    });
+    if(!result.canceled){
+      setPhoto(result.assets[0].uri);
+    } else {
+      alert(`You didn't select any Image.`);
+    };
+    setIsDisabled(false);
+  };
+
   const uploadPhoto = () => {
     uploadPostToServer();
     navigation.navigate('PostsScreen', {photo});
     setIsDisabled(true);
+    setTitle('');
+    setLocationTitle('');
   };
   
   const uploadPostToServer = async() => {
@@ -78,23 +95,24 @@ const CreatePostsScreen = ({navigation}) => {
   return (
     <View style={styles.screenContainer}>
       <Camera style={styles.camera} ref={setCamera}>
-        {photo && (
           <View style={styles.takePhotoView}>
             <Image source={{uri: photo}} style={{width: '100%', height: '100%'}}/>
           </View>
-        )}
         <TouchableOpacity onPress={takePhoto} style={styles.snapContainer}>
           <Image source={cameraIcon} style={styles.snap}/>
         </TouchableOpacity>
       </Camera>
-      <Text style={{color:'#BDBDBD', marginBottom: 32}}>Edit photo</Text>
+      <Text style={{color:'#BDBDBD', marginBottom: 32}}
+      onPress={pickImage}>Edit photo</Text>
       <View>
         <TextInput style={styles.input}
+        value={title}
         placeholder="Name..."
         onChangeText={setTitle}
         />
         <View style={styles.postIconContainer}>
         <TextInput style={{...styles.input, paddingLeft: 35}}
+        value={locationTitle}
         placeholder="Location..."
         onChangeText={setLocationTitle}
         />
