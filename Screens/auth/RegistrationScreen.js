@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {
-  Dimensions,
   Image,
   ImageBackground,
   Keyboard,
@@ -28,10 +27,9 @@ export default function RegistrationScreen({navigation}) {
   
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [dimensions, setDimensions] = useState(Dimensions.get('window').width);
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
-
+  
   const dispatch = useDispatch();
 
   const pickImage = async () => {
@@ -55,19 +53,6 @@ export default function RegistrationScreen({navigation}) {
     };
   }, [state]);
 
-  useEffect(() => {
-    const onChange = () => {
-      const width = Dimensions.get("window").width;
-      setDimensions(width);
-    };
-
-    Dimensions.addEventListener("change", onChange);
-    
-    return () => {
-      Dimensions.removeEventListener("change", onChange);
-    };
-  }, []);
-
   const toggleSecureTextEntry = () => {
     setIsSecureTextEntry((prevState) => !prevState);
   };
@@ -80,23 +65,27 @@ export default function RegistrationScreen({navigation}) {
       setIsDisabled(true);
     };
 
+    const keyboardHide = () => {
+      setIsShowKeyboard(false);
+      Keyboard.dismiss();
+    };
+console.log(state);
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground source={imageBG} style={styles.imageBG}>
-          <View style={{...styles.form, paddingBottom: 45,
-            marginBottom: isShowKeyboard ? -70 : 0,
-            width: dimensions,
-          }}>
+          <View style={styles.form}>
             <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
             >
-              <View style={{...styles.avatar, marginLeft: 128}}>
+              <View style={{paddingBottom: 45, alignItems: 'center',
+            marginBottom: isShowKeyboard ? -160 : 0}}>
+              <View style={styles.avatar}>
                 {state.image 
                   ? <Image source={state.image} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
                 }
-                <TouchableOpacity onPress={pickImage}>
+                <TouchableOpacity onPressIn={pickImage}>
                   {!state.image
                   ? <Image source={add} style={styles.user}/>
                   : <Image source={edit} style={styles.user}/>}
@@ -157,6 +146,7 @@ export default function RegistrationScreen({navigation}) {
                   <Text> Log in</Text>
                 </Text>
               </TouchableOpacity>
+              </View>
             </KeyboardAvoidingView>
           </View>
         </ImageBackground>

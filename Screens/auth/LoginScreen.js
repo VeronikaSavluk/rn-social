@@ -22,7 +22,7 @@ export default function LoginScreen({navigation}) {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isSecureTextEntry, setIsSecureTextEntry] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
-
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,14 +52,12 @@ export default function LoginScreen({navigation}) {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground source={imageBG} style={styles.imageBG}>
-          <View style={{
-            ...styles.form,
-            paddingBottom: 110,
-            marginBottom: isShowKeyboard ? -207 : 0
-          }}>
+          <View style={styles.form}>
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
+              <View style={{paddingBottom: 110,
+            marginBottom: isShowKeyboard ? -207 : 0}}>
               <Text style={styles.title}>Login</Text>
               <TextInput
                 name='email'
@@ -106,6 +104,7 @@ export default function LoginScreen({navigation}) {
                   <Text> Sign up</Text>
                 </Text>
               </TouchableOpacity>
+              </View>
             </KeyboardAvoidingView>
           </View>
         </ImageBackground>

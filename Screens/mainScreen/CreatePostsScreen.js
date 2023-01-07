@@ -2,11 +2,14 @@ import React, {useState, useEffect} from "react";
 import {useSelector} from 'react-redux';
 import {
   Image,
+  Platform,
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Camera } from 'expo-camera';
 import * as Location from "expo-location";
@@ -82,6 +85,7 @@ const CreatePostsScreen = ({navigation}) => {
 
   const uploadPhoto = () => {
     setIsShowKeyboard(false);
+    Keyboard.dismiss();
     uploadPostToServer();
     navigation.navigate('PostsScreen', {photo});
     setIsDisabled(true);
@@ -113,53 +117,58 @@ const CreatePostsScreen = ({navigation}) => {
     return processedPhoto;
   };
   
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
+  
   return (
-    <View style={{...styles.screenContainer}}>
-      <View style={{paddingBottom: isShowKeyboard ? 145 : 0}}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
+    <View style={{...styles.screenContainer, justifyContent: "flex-end"}}>
       <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
-        >
-      <View>
-      <Camera style={styles.camera} ref={setCamera}>
-        {photo &&
-          <View style={styles.takePhotoView}>
-            <Image source={{uri: photo}} style={{width: '100%', height: '100%'}}/>
-          </View>}
-        <TouchableOpacity onPress={takePhoto} style={styles.snapContainer}>
-          <Image source={cameraIcon} style={styles.snap}/>
-        </TouchableOpacity>
-      </Camera>
-      <Text style={{color:'#BDBDBD', marginBottom: 32}}
-      onPress={pickImage}>Edit photo</Text>
-        <TextInput style={styles.input}
-        value={title}
-        onFocus={() => setIsShowKeyboard(true)}
-        placeholder="Name..."
-        onChangeText={setTitle}
-        />
-        <View style={styles.postIconContainer}>
-        <TextInput style={{...styles.input, paddingLeft: 35}}
-        value={locationTitle}
-        onFocus={() => setIsShowKeyboard(true)}
-        placeholder="Location..."
-        onChangeText={setLocationTitle}
-        />
-        <TouchableOpacity style={styles.postIconLocation}
-        onPress={() => navigation.navigate('Map', {location: item.location})}
-        >
-        <Image source={locationIcon}/>
-        </TouchableOpacity>
-        </View>
-      </View>
-      <TouchableOpacity disabled={isDisabled}
-      style={{...styles.btn, backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'}}
-      onPress={uploadPhoto}
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
       >
-        <Text style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}>Publish</Text>
-      </TouchableOpacity>
+        <View style={{paddingBottom: 16, marginBottom: isShowKeyboard ? -120 : 0}}>
+            <Camera style={styles.camera} ref={setCamera}>
+            {photo &&
+              <View style={styles.takePhotoView}>
+                <Image source={{uri: photo}} style={{width: '100%', height: '100%'}}/>
+              </View>}
+            <TouchableOpacity onPress={takePhoto} style={styles.snapContainer}>
+              <Image source={cameraIcon} style={styles.snap}/>
+            </TouchableOpacity>
+            </Camera>
+          <Text style={{color:'#BDBDBD', marginBottom: 32}}
+          onPress={pickImage}>Edit photo</Text>
+          <TextInput style={styles.input}
+          value={title}
+          onFocus={() => setIsShowKeyboard(true)}
+          placeholder="Name..."
+          onChangeText={setTitle}
+          />
+          <View style={styles.postIconContainer}>
+          <TextInput style={{...styles.input, paddingLeft: 35}}
+          value={locationTitle}
+          onFocus={() => setIsShowKeyboard(true)}
+          placeholder="Location..."
+          onChangeText={setLocationTitle}
+          />
+          <TouchableOpacity style={styles.postIconLocation}
+          onPress={() => navigation.navigate('Map', {location: item.location})}
+          >
+          <Image source={locationIcon}/>
+          </TouchableOpacity>
+          </View>
+          <TouchableOpacity disabled={isDisabled}
+          style={{...styles.btn, backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'}}
+          onPress={uploadPhoto}
+          >
+          <Text style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}>Publish</Text>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
-      </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { authSignOutUser } from "../../redux/auth/authOperations";
+import * as MediaLibrary from "expo-media-library";
+import * as ImagePicker from 'expo-image-picker';
+import { authSignOutUser, authStateChangeUser } from "../../redux/auth/authOperations";
 import db from '../../firebase/config';
 
 import imageBG from '../../images/bg-photo.png';
@@ -23,9 +25,9 @@ import {styles} from '../../styles';
 
 const ProfileScreen = ({navigation}) => {
   const [userPosts, setUserPosts] = useState([]);
-
+  
   const dispatch = useDispatch();
-  const {userId, nickname, image} = useSelector((state) => state.auth);
+  const {userId, nickname, email, image} = useSelector((state) => state.auth);
 
   useEffect(() => {
     getUserPosts();
@@ -40,6 +42,20 @@ const ProfileScreen = ({navigation}) => {
     );
   };
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if(!result.canceled){
+      dispatch(authStateChangeUser({userId, nickname, email, image: result.assets[0].uri}));
+    } else {
+      alert(`You didn't select any Image.`);
+    };
+  };
+
   const signOut = () => {
     dispatch(authSignOutUser());
   };
@@ -48,7 +64,7 @@ const ProfileScreen = ({navigation}) => {
     <View style={styles.container}>
       <ImageBackground source={imageBG} style={styles.imageBG}>
         <View style={styles.profileContainer}>
-          <TouchableOpacity onPress={signOut}>
+          <TouchableOpacity onPressIn={signOut}>
             <Image source={logOut} style={styles.logOut}/>
           </TouchableOpacity>
           <View style={styles.avatar}>
@@ -56,7 +72,7 @@ const ProfileScreen = ({navigation}) => {
                 ? <Image source={image} style={styles.image}/>
                 : <Image source={defaultImage} style={styles.image}/>
               }
-              <TouchableOpacity onPress={() => setState(prevState => ({...prevState, image: value}))}>
+              <TouchableOpacity onPressIn={pickImage}>
                 {image
                   ? <Image source={add} style={styles.user}/>
                   : <Image source={edit} style={styles.user}/>

@@ -130,7 +130,6 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       borderColor: 'white',
       borderRadius: 8,
-      overflow: 'hidden',
     },
     takePhotoView: {
       position: 'absolute',

@@ -1,6 +1,6 @@
 import React from "react";
 import {View} from 'react-native';
-import MapView, { Marker } from "react-native-maps";
+// import MapView, { Marker } from "react-native-maps";
 
 import {styles} from '../../styles';
 
@@ -14,7 +14,7 @@ const MapScreen = ({route}) => {
   
   return (
 		<View style={styles.screenContainer}>
-			<MapView
+			{/* <MapView
         style={styles.map}
         region={{
           latitude: latitude,
@@ -28,7 +28,7 @@ const MapScreen = ({route}) => {
           coordinate={{ latitude: latitude, longitude: longitude }}
           description={title}
         />
-      </MapView>
+      </MapView> */}
 		</View>
 	)
 };
