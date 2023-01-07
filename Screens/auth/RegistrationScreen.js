@@ -40,7 +40,7 @@ export default function RegistrationScreen({navigation}) {
       allowsEditing: true,
       quality: 1,
     });
-    
+
     if(!result.canceled){
       setState((prevState) => ({...prevState, image: result.assets[0].uri}));
     } else {
@@ -84,14 +84,14 @@ export default function RegistrationScreen({navigation}) {
     <TouchableWithoutFeedback>
       <View style={styles.container}>
         <ImageBackground source={imageBG} style={styles.imageBG}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-          >
-            <View style={{...styles.form,
-              paddingBottom: isShowKeyboard ? 145 : 45,
-              width: dimensions,
-            }}>
-              <View style={styles.avatar}>
+          <View style={{...styles.form, paddingBottom: 45,
+            marginBottom: isShowKeyboard ? -70 : 0,
+            width: dimensions,
+          }}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS == "ios" ? "padding" : "height"}
+            >
+              <View style={{...styles.avatar, marginLeft: 128}}>
                 {state.image 
                   ? <Image source={state.image} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
@@ -152,13 +152,13 @@ export default function RegistrationScreen({navigation}) {
               <TouchableOpacity
                 onPress={() => navigation.navigate('Login')}
               >
-                <Text style={{color: '#1B4371'}}>
+                <Text style={{color: '#1B4371', textAlign: 'center'}}>
                   Do you already have an account?
                   <Text> Log in</Text>
                 </Text>
               </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+          </View>
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>

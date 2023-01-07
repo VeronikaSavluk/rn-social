@@ -11,25 +11,21 @@ const MapScreen = ({route}) => {
     latitude,
     longitude
   } = route.params.location;
-
+  
   return (
 		<View style={styles.screenContainer}>
 			<MapView
         style={styles.map}
         region={{
-          latitude,
-          longitude,
+          latitude: latitude,
+          longitude: longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        mapType="standard"
-        minZoomLevel = {15}
-        onMapReady={() => console.log("Map is ready")}
-        onRegionChange={() => console.log("Region change")}
       >
         <Marker
           title={locationTitle}
-          coordinate={{ latitude, longitude }}
+          coordinate={{ latitude: latitude, longitude: longitude }}
           description={title}
         />
       </MapView>

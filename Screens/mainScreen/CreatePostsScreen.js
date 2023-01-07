@@ -5,9 +5,10 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from "react-native";
-import {Camera} from 'expo-camera';
+import { Camera } from 'expo-camera';
 import * as Location from "expo-location";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from 'expo-image-picker';
@@ -24,6 +25,8 @@ const CreatePostsScreen = ({navigation}) => {
   const [locationTitle, setLocationTitle] = useState('');
   const [location, setLocation] = useState(null);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [hasPermission, setHasPermission] = useState(null);
 
   const {userId} = useSelector(state => state.auth);
 
@@ -39,6 +42,22 @@ const CreatePostsScreen = ({navigation}) => {
       setLocation(location);
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  };
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -62,9 +81,11 @@ const CreatePostsScreen = ({navigation}) => {
   };
 
   const uploadPhoto = () => {
+    setIsShowKeyboard(false);
     uploadPostToServer();
     navigation.navigate('PostsScreen', {photo});
     setIsDisabled(true);
+    setPhoto(null);
     setTitle('');
     setLocationTitle('');
   };
@@ -91,28 +112,35 @@ const CreatePostsScreen = ({navigation}) => {
 
     return processedPhoto;
   };
-
+  
   return (
-    <View style={styles.screenContainer}>
+    <View style={{...styles.screenContainer}}>
+      <View style={{paddingBottom: isShowKeyboard ? 145 : 0}}>
+      <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        >
+      <View>
       <Camera style={styles.camera} ref={setCamera}>
+        {photo &&
           <View style={styles.takePhotoView}>
             <Image source={{uri: photo}} style={{width: '100%', height: '100%'}}/>
-          </View>
+          </View>}
         <TouchableOpacity onPress={takePhoto} style={styles.snapContainer}>
           <Image source={cameraIcon} style={styles.snap}/>
         </TouchableOpacity>
       </Camera>
       <Text style={{color:'#BDBDBD', marginBottom: 32}}
       onPress={pickImage}>Edit photo</Text>
-      <View>
         <TextInput style={styles.input}
         value={title}
+        onFocus={() => setIsShowKeyboard(true)}
         placeholder="Name..."
         onChangeText={setTitle}
         />
         <View style={styles.postIconContainer}>
         <TextInput style={{...styles.input, paddingLeft: 35}}
         value={locationTitle}
+        onFocus={() => setIsShowKeyboard(true)}
         placeholder="Location..."
         onChangeText={setLocationTitle}
         />
@@ -129,6 +157,8 @@ const CreatePostsScreen = ({navigation}) => {
       >
         <Text style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}>Publish</Text>
       </TouchableOpacity>
+      </KeyboardAvoidingView>
+      </View>
     </View>
   );
 };

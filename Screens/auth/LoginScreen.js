@@ -52,14 +52,14 @@ export default function LoginScreen({navigation}) {
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground source={imageBG} style={styles.imageBG}>
-          <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <View style={{
-              ...styles.form,
-              paddingBottom: 110,
-              marginBottom: isShowKeyboard ? -207 : 0
-            }}>
+          <View style={{
+            ...styles.form,
+            paddingBottom: 110,
+            marginBottom: isShowKeyboard ? -207 : 0
+          }}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
               <Text style={styles.title}>Login</Text>
               <TextInput
                 name='email'
@@ -101,13 +101,13 @@ export default function LoginScreen({navigation}) {
               <TouchableOpacity
               onPress={() => navigation.navigate('Registration')}
               >
-                <Text style={{color:'#1B4371'}}>
+                <Text style={{color:'#1B4371', textAlign: 'center'}}>
                   Don't have an account yet?
                   <Text> Sign up</Text>
                 </Text>
               </TouchableOpacity>
-            </View>
-          </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+          </View>
         </ImageBackground>
       </View>
     </TouchableWithoutFeedback>

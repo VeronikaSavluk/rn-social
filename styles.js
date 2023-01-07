@@ -61,7 +61,6 @@ export const styles = StyleSheet.create({
       backgroundColor: '#ffffff',
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
-      alignItems: 'center',
     },
     image: {
       alignSelf: 'center',
