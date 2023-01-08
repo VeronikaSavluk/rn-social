@@ -69,7 +69,7 @@ export default function RegistrationScreen({navigation}) {
       setIsShowKeyboard(false);
       Keyboard.dismiss();
     };
-console.log(state);
+
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
