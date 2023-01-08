@@ -11,11 +11,8 @@ import LoginScreen from './Screens/auth/LoginScreen';
 import ProfileScreen from './Screens/mainScreen/ProfileScreen';
 import CreatePostsScreen from './Screens/mainScreen/CreatePostsScreen';
 import Home from './Screens/mainScreen/Home';
-import {styles} from './styles';
 
-import posts from './images/grid.png';
-import user from './images/user.png';
-import plus from './images/new.png';
+import {styles} from './styles';
 
 const useRoute = (isAuth) => {
   if(!isAuth){
@@ -36,7 +33,9 @@ const useRoute = (isAuth) => {
   };
 
   return (
-    <MainTab.Navigator screenOptions={{tabBarShowLabel: false}}>
+    <MainTab.Navigator screenOptions={{
+      tabBarShowLabel: false
+      }}>
       <MainTab.Screen
         name='Posts'
         component={Home}
@@ -44,7 +43,9 @@ const useRoute = (isAuth) => {
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>
-              <Image source={posts} size={size} color={color}/>
+              <Image source={require('./images/grid.png')}
+              size={size} color={color}
+              />
             </View>
           ),
         }}
@@ -53,10 +54,14 @@ const useRoute = (isAuth) => {
         name='CreatePosts'
         component={CreatePostsScreen}
         options={{
+          headerTitleAlign: 'center',
           tabBarShowLabel: false,
+          tabBarStyle: {display: 'none'},
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.plusIcon}>
-              <Image source={plus} size={size} color={color} />
+              <Image source={require('./images/new.png')}
+              size={size} color={color}
+              />
             </View>
           ),
         }}
@@ -68,7 +73,9 @@ const useRoute = (isAuth) => {
           headerShown: false,
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.icon}>
-              <Image source={user} size={size} color={color}/>
+              <Image source={require('./images/user.png')}
+              size={size} color={color}
+              />
             </View>
           ),
         }}
