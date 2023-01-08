@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     },
     imageBG:{
       flex: 1,
-      resizeMode: 'cover',
+      resizeMode: 'contain',
       justifyContent: 'flex-end',
     },
     avatar: {
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     },
     image: {
       alignSelf: 'center',
-      resizeMode: 'cover',
+      resizeMode: 'contain',
       width: '100%',
       height: '100%',
       borderRadius: 8,
@@ -156,6 +156,15 @@ export const styles = StyleSheet.create({
     snap: {
       width: 24,
       height: 24,
+    },
+    trashIcon: {
+      marginHorizontal: 'auto',
+      width: 70,
+      height: 40,
+      backgroundColor: '#F6F6F6',
+      borderRadius: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     postIconContainer: {
       position: 'relative',
