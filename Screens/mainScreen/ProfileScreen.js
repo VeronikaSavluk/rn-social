@@ -30,7 +30,7 @@ const ProfileScreen = ({navigation}) => {
   
   const user = db.auth().currentUser;
   const {uid, displayName, email, photoURL} = user;
-console.log('user1:', uid, displayName, email, photoURL);
+
   useEffect(() => {
     getUserPosts();
   }, []);
@@ -61,7 +61,7 @@ console.log('user1:', uid, displayName, email, photoURL);
       alert(`You didn't select any Image.`);
     };
   };
-  console.log('user3:', uid, displayName, email, photoURL);
+  
   const signOut = () => {
     dispatch(authSignOutUser());
   };
