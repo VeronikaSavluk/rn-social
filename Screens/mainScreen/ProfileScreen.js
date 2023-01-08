@@ -8,19 +8,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from 'expo-image-picker';
 import { authSignOutUser, authStateChangeUser } from "../../redux/auth/authOperations";
 import db from '../../firebase/config';
 
-import imageBG from '../../images/bg-photo.png';
-import defaultImage from '../../images/avatar_default.png';
-import add from '../../images/add.png';
-import edit from '../../images/edit.png';
-import logOut from '../../images/log-out.png';
-import locationIcon from '../../images/map-pin.png';
-import commentIcon from '../../images/message-circle.png';
-import likeIcon from '../../images/thumbs-up.png';
 import {styles} from '../../styles';
 
 const ProfileScreen = ({navigation}) => {
@@ -68,20 +59,20 @@ const ProfileScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={imageBG} style={styles.imageBG}>
+      <ImageBackground source={require('../../images/bg-photo.png')} style={styles.imageBG}>
         <View style={styles.profileContainer}>
           <TouchableOpacity onPressIn={signOut}>
-            <Image source={logOut} style={styles.logOut}/>
+            <Image source={require('../../images/log-out.png')} style={styles.logOut}/>
           </TouchableOpacity>
           <View style={styles.avatar}>
               {photoURL 
                 ? <Image source={{uri: photoURL}} style={styles.image}/>
-                : <Image source={defaultImage} style={styles.image}/>
+                : <Image source={require('../../images/avatar_default.png')} style={styles.image}/>
               }
               <TouchableOpacity onPressIn={pickImage}>
                 {photoURL
-                  ? <Image source={add} style={styles.user}/>
-                  : <Image source={edit} style={styles.user}/>
+                  ? <Image source={require('../../images/add.png')} style={styles.user}/>
+                  : <Image source={require('../../images/edit.png')} style={styles.user}/>
                 }
               </TouchableOpacity>
           </View>
@@ -96,15 +87,15 @@ const ProfileScreen = ({navigation}) => {
             <View style={styles.infoPost}>
             <TouchableOpacity onPress={() => navigation.navigate('Comments', {postId: item.id})} 
             style={styles.postIconContainer}>
-            <Image source={commentIcon} style={styles.postIcon}/>
+            <Image source={require('../../images/message-circle.png')} style={styles.postIcon}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {}} 
             style={styles.postIconContainer}>
-            <Image source={likeIcon} style={styles.postIcon}/>
+            <Image source={require('../../images/thumbs-up.png')} style={styles.postIcon}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Map', {location: item.location})} 
             style={{...styles.postIconContainer, width: 255}}>
-            <Image source={locationIcon} style={styles.postIcon}/>
+            <Image source={require('../../images/map-pin.png')} style={styles.postIcon}/>
             <Text>{item.locationTitle}</Text>
             </TouchableOpacity>
           </View>
