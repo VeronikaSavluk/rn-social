@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from 'expo-image-picker';
 import { authSignOutUser, authStateChangeUser } from "../../redux/auth/authOperations";
@@ -27,16 +27,18 @@ const ProfileScreen = ({navigation}) => {
   const [userPosts, setUserPosts] = useState([]);
   
   const dispatch = useDispatch();
-  const {userId, nickname, email, image} = useSelector((state) => state.auth);
-
+  
+  const user = db.auth().currentUser;
+  const {uid, displayName, email, photoURL} = user;
+console.log('user1:', uid, displayName, email, photoURL);
   useEffect(() => {
     getUserPosts();
   }, []);
-
+  
   const getUserPosts = async() => {
     await db.firestore()
     .collection('posts')
-    .where('userId', '==', userId)
+    .where('userId', '==', uid)
     .onSnapshot((data) => 
     setUserPosts(data.docs.map(doc => ({...doc.data()})))
     );
@@ -50,12 +52,16 @@ const ProfileScreen = ({navigation}) => {
     });
 
     if(!result.canceled){
-      dispatch(authStateChangeUser({userId, nickname, email, image: result.assets[0].uri}));
+      user.updateProfile({
+        displayName: displayName,
+        photoURL: result.assets[0].uri
+      });
+      dispatch(authStateChangeUser());
     } else {
       alert(`You didn't select any Image.`);
     };
   };
-
+  console.log('user3:', uid, displayName, email, photoURL);
   const signOut = () => {
     dispatch(authSignOutUser());
   };
@@ -68,18 +74,18 @@ const ProfileScreen = ({navigation}) => {
             <Image source={logOut} style={styles.logOut}/>
           </TouchableOpacity>
           <View style={styles.avatar}>
-              {image 
-                ? <Image source={image} style={styles.image}/>
+              {photoURL 
+                ? <Image source={{uri: photoURL}} style={styles.image}/>
                 : <Image source={defaultImage} style={styles.image}/>
               }
               <TouchableOpacity onPressIn={pickImage}>
-                {image
+                {photoURL
                   ? <Image source={add} style={styles.user}/>
                   : <Image source={edit} style={styles.user}/>
                 }
               </TouchableOpacity>
           </View>
-          <Text style={styles.title}>{nickname}</Text>
+          <Text style={styles.title}>{displayName}</Text>
           <FlatList style={{width: '100%', paddingHorizontal: 16}} data={userPosts}
           keyExtractor={(item, idx) => idx.toString()}
           renderItem={({item}) => (

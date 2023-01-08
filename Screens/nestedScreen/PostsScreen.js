@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import db from '../../firebase/config';
+
 import locationIcon from '../../images/map-pin.png';
 import commentIcon from '../../images/message-circle.png';
 import defaultImage from '../../images/avatar_default.png';
@@ -15,8 +16,8 @@ import {styles} from '../../styles';
 
 const PostsScreen = ({route, navigation}) => {
   const [posts, setPosts] = useState([]);
-  
-  const {nickname, email, image} = useSelector((state) => state.auth);
+
+  const {userId, nickname, email, image} = useSelector((state) => state.auth);
 
   const getPosts = async() => {
     await db.firestore()
@@ -29,13 +30,13 @@ const PostsScreen = ({route, navigation}) => {
   useEffect(() => {
     getPosts();
   }, []);
-  
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.userBox}>
       <View style={{width: 60, borderRadius: 16, marginRight: 8}}>
         {image 
-        ? <Image source={image} style={styles.image}/>
+        ? <Image source={{uri: image}} style={styles.image}/>
         : <Image source={defaultImage} style={styles.image}/>
         }
         </View>

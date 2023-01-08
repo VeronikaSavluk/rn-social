@@ -82,7 +82,7 @@ console.log(state);
             marginBottom: isShowKeyboard ? -160 : 0}}>
               <View style={styles.avatar}>
                 {state.image 
-                  ? <Image source={state.image} style={styles.image}/>
+                  ? <Image source={{uri: state.image}} style={styles.image}/>
                   : <Image source={defaultImage} style={styles.image}/>
                 }
                 <TouchableOpacity onPressIn={pickImage}>

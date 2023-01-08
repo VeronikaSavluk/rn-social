@@ -36,7 +36,11 @@ export const authSignInUser = ({email, password}) => async (dispatch, getState) 
 		const {user} = await db
 		.auth()
 		.signInWithEmailAndPassword(email, password);
-		dispatch(updateUserProfile({userId: user.uid}));
+		dispatch(updateUserProfile({
+			userId: user.uid,
+			nickname: user.displayName,
+			email: user.email,
+			image: user.photoURL}));
 	} catch (error) {
 		console.log(error.message);
 		console.log(error.code);
