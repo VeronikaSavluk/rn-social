@@ -113,6 +113,15 @@ export const styles = StyleSheet.create({
     showBtn: {
       color: '#1B4371',
     },
+    comment: {
+      position: 'relative',
+      width: '100%',
+    },
+    sendIcon: {
+      position: 'absolute',
+      top: 8,
+      right: 0,
+    },
     text: {
       color: '#000000',
       fontSize: 16,
