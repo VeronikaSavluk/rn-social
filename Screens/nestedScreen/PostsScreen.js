@@ -34,7 +34,7 @@ const PostsScreen = ({route, navigation}) => {
   return (
     <View style={styles.screenContainer}>
       <View style={styles.userBox}>
-      <View style={{width: 60, borderRadius: 16, marginRight: 8}}>
+        <View style={{width: 60, borderRadius: 16, marginRight: 8}}>
         {image 
         ? <Image source={{uri: image}} style={styles.image}/>
         : <Image source={defaultImage} style={styles.image}/>
