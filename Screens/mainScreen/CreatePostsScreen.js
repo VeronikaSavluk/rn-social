@@ -32,7 +32,7 @@ const CreatePostsScreen = ({navigation}) => {
   const [hasPermission, setHasPermission] = useState(null);
 
   const {userId} = useSelector(state => state.auth);
-
+ 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -63,9 +63,9 @@ const CreatePostsScreen = ({navigation}) => {
   };
 
   const takePhoto = async () => {
-    const photo = await camera.takePictureAsync();
-    await MediaLibrary.createAssetAsync(photo.uri);
-    setPhoto(photo.uri);
+    const photoFromCamera = await camera.takePictureAsync();
+    await MediaLibrary.createAssetAsync(photoFromCamera.uri);
+    setPhoto(photoFromCamera.uri);
     setIsDisabled(false);
   };
 
@@ -130,41 +130,71 @@ const CreatePostsScreen = ({navigation}) => {
       >
         <View style={{paddingBottom: 16, marginBottom: isShowKeyboard ? -120 : 0}}>
             <Camera style={styles.camera} ref={setCamera}>
-            {photo &&
+              {photo && (
               <View style={styles.takePhotoView}>
-                <Image source={{uri: photo}} style={{width: '100%', height: '100%'}}/>
-              </View>}
-            <TouchableOpacity onPress={takePhoto} style={styles.snapContainer}>
+                <Image source={{uri: photo}}
+                style={{height: '100%', width: '100%', borderRadius: 8}}
+                />
+              </View>
+              )}
+            <TouchableOpacity
+              onPress={takePhoto}
+              style={styles.snapContainer}
+            >
               <Image source={cameraIcon} style={styles.snap}/>
             </TouchableOpacity>
             </Camera>
-          <Text style={{color:'#BDBDBD', marginBottom: 32}}
-          onPress={pickImage}>Edit photo</Text>
+          <Text
+            style={{color:'#BDBDBD', marginBottom: 16}}
+            onPress={pickImage}
+          >Edit photo
+          </Text>
           <TextInput style={styles.input}
-          value={title}
-          onFocus={() => setIsShowKeyboard(true)}
-          placeholder="Name..."
-          onChangeText={setTitle}
+            value={title}
+            onFocus={() => setIsShowKeyboard(true)}
+            placeholder="Name..."
+            onChangeText={setTitle}
           />
           <View style={styles.postIconContainer}>
-          <TextInput style={{...styles.input, paddingLeft: 35}}
-          value={locationTitle}
-          onFocus={() => setIsShowKeyboard(true)}
-          placeholder="Location..."
-          onChangeText={setLocationTitle}
+          <TextInput
+            style={{...styles.input, paddingLeft: 35}}
+            value={locationTitle}
+            onFocus={() => setIsShowKeyboard(true)}
+            placeholder="Location..."
+            onChangeText={setLocationTitle}
           />
-          <TouchableOpacity style={styles.postIconLocation}
-          onPress={() => navigation.navigate('Map', {location: item.location})}
+          <TouchableOpacity
+            style={styles.postIconLocation}
+            onPress={() => navigation.navigate('Map', {location: item.location})}
           >
-          <Image source={locationIcon}/>
+            <Image source={locationIcon}/>
           </TouchableOpacity>
           </View>
           <TouchableOpacity disabled={isDisabled}
-          style={{...styles.btn, backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'}}
+          style={{
+            ...styles.btn,
+            marginBottom: 16,
+            backgroundColor: isDisabled ? '#F6F6F6' : '#FF6C00'
+          }}
           onPress={uploadPhoto}
           >
-          <Text style={{...styles.text, color: isDisabled ? '#BDBDBD' : '#ffffff'}}>Publish</Text>
+            <Text style={{
+              ...styles.text,
+              color: isDisabled ? '#BDBDBD' : '#ffffff'
+              }}>Publish
+            </Text>
           </TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+          <TouchableOpacity
+          onPress={() => navigation.navigate('PostsScreen')} 
+          style={styles.trashIcon}
+          >
+            <Image
+            source={require('../../images/trash.png')}
+            style={styles.postIcon}
+            />
+          </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </View>
