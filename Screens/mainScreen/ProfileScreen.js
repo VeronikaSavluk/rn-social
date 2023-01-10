@@ -85,7 +85,7 @@ const ProfileScreen = ({navigation}) => {
             style={{height: 240}}/>
             <Text>{item.title}</Text>
             <View style={styles.infoPost}>
-            <TouchableOpacity onPress={() => navigation.navigate('Comments', {postId: item.id})} 
+            <TouchableOpacity onPress={() => navigation.navigate('Comments', {postId: item.id, photo: item.photo})} 
             style={styles.postIconContainer}>
             <Image source={require('../../images/message-circle.png')} style={styles.postIcon}/>
             </TouchableOpacity>
