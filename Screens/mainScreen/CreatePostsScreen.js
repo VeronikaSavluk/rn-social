@@ -31,7 +31,7 @@ const CreatePostsScreen = ({navigation}) => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
 
-  const {userId} = useSelector(state => state.auth);
+  const {userId, image} = useSelector(state => state.auth);
  
   useEffect(() => {
     (async () => {
@@ -98,7 +98,7 @@ const CreatePostsScreen = ({navigation}) => {
     const photo = await uploadPhotoToServer();
     await db.firestore()
     .collection('posts')
-    .add({photo, title, locationTitle, location: location.coords, userId});
+    .add({photo, title, locationTitle, location: location.coords, userId, image});
   };
 
   const uploadPhotoToServer = async() => {
