@@ -52,6 +52,10 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       marginBottom: 8,
     },
+    userBoxOfComment: {
+      width: 28,
+      height: 28,
+    },
     title: {
       marginVertical: 32,
       fontSize: 30,
