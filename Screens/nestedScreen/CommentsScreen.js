@@ -23,7 +23,7 @@ const CommentsScreen = ({route}) => {
   const [comments, setComments] = useState([]);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
 
-  const {nickname, image} = useSelector((state) => state.auth);
+  const {userId, nickname, image} = useSelector((state) => state.auth);
 
   useEffect(() => {
     getComments();
@@ -34,9 +34,9 @@ const CommentsScreen = ({route}) => {
     .collection('posts')
     .doc(postId)
     .collection('comments')
-    .add({comment, nickname, image, date: new Date().toLocaleString()});
+    .add({comment, nickname, userId, image, date: new Date().toLocaleString()});
 
-    setComment(initialComment);
+    setComment('');
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
@@ -69,22 +69,25 @@ const CommentsScreen = ({route}) => {
             <FlatList
               data={comments}
               renderItem={({item}) => (
-              <View style={{...styles.userBox, marginBottom: 16}}>
-                <View style={{width: 28, borderRadius: 50, marginRight: 16}}>
+                <View style={{marginBottom: 16, alignItems: 'center', flexDirection: item.userId === userId ? 'row-reverse' : 'row'}}>
+                <View style={{...styles.userBoxOfComment, marginRight: item.userId === userId ? 0 : 16,
+                marginLeft: item.userId === userId ? 16 : 0}}>
                 {item.image
                 ? <Image source={{uri: item.image}}
-                style={{...styles.image, width: 28, height: 28}}
+                style={{...styles.image, borderRadius: 50, width: 28, height: 28}}
                 />
                 : <Image source={require('../../images/avatar_default.png')}
-                 style={{...styles.image, width: 28, height: 28}}/>
+                 style={{...styles.image, borderRadius: 50, width: 28, height: 28}}/>
                 }
                 </View>
-                <View style={{fontSize: 13}}>
-                  <Text style={{...styles.text, textAlign: 'left', padding: 16}}>{item.comment}</Text>
+                <View style={{fontSize: 13, padding: 16}}>
+                  <Text style={{...styles.text, textAlign: 'left'}}>{item.comment}</Text>
+                  <Text style={{...styles.text, color: '#BDBDBD', textAlign: 'right'}}>{item.date}</Text>
                 </View>
               </View>
-              )}
-              keyExtractor={item => item.id}
+              )
+            }
+              keyExtractor={(item, idx) => idx + 1}
             />
           </SafeAreaView>
             <View style={styles.comment}>
