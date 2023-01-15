@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import {
+  ActivityIndicator,
   Image,
   Text,
   TouchableOpacity,
@@ -31,7 +32,11 @@ const PostsScreen = ({route, navigation}) => {
     getPosts();
   }, []);
 
-  return (
+  return <>
+  {!posts ? (<View style={{...styles.screenContainer, justifyContent: 'center'}}>
+		<ActivityIndicator color="#FF6C00" size={40} />
+    </View>
+		) :	(
     <View style={styles.screenContainer}>
       <View style={styles.userBox}>
         <View style={{width: 60, borderRadius: 16, marginRight: 8}}>
@@ -45,8 +50,8 @@ const PostsScreen = ({route, navigation}) => {
           <Text>{email}</Text>
         </View>
       </View>
-    <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()}
-    renderItem={({item}) => (
+      <FlatList data={posts} keyExtractor={(item, idx) => idx.toString()}
+      renderItem={({item}) => (
       <View style={{marginBottom: 32}}>
         <Image source={{uri: item.photo}} style={{height: 240, borderRadius: 8}}/>
         <Text>{item.title}</Text>
@@ -62,9 +67,10 @@ const PostsScreen = ({route, navigation}) => {
         </TouchableOpacity>
         </View>
       </View>
-    )} />
+      )} />
     </View>
-  );
+    )}
+  </>
 };
 
 export default PostsScreen;
