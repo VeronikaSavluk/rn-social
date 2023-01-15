@@ -45,7 +45,8 @@ const Home = ({ navigation, route }) => {
           )
         }}
       />
-      <NestedScreen.Screen name='Comments'
+      <NestedScreen.Screen
+        name='Comments'
         component={CommentsScreen}
         options={{ headerTitleAlign: 'center' }}
         />
