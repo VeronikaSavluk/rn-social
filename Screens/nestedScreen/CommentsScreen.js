@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import db from '../../firebase/config';
 import {useSelector} from 'react-redux';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   Keyboard,
@@ -56,7 +57,11 @@ const CommentsScreen = ({route}) => {
     Keyboard.dismiss();
   };
 
-  return (
+  return <>
+  {!comments ? (<View style={{...styles.screenContainer, justifyContent: 'center'}}>
+		<ActivityIndicator color="#FF6C00" size={40} />
+    </View>
+		) :	(
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={{...styles.screenContainer, height: 690}}>
         <KeyboardAvoidingView
@@ -82,7 +87,7 @@ const CommentsScreen = ({route}) => {
                 </View>
                 <View style={{fontSize: 13, padding: 16}}>
                   <Text style={{...styles.text, textAlign: 'left'}}>{item.comment}</Text>
-                  <Text style={{...styles.text, color: '#BDBDBD', textAlign: 'right'}}>{item.date}</Text>
+                  <Text style={{...styles.text, color: '#BDBDBD', textAlign: 'right', fontSize: 10}}>{item.date}</Text>
                 </View>
               </View>
               )
@@ -112,7 +117,8 @@ const CommentsScreen = ({route}) => {
         </KeyboardAvoidingView>    
       </View>
   </TouchableWithoutFeedback>
-  );
+  )}
+  </>;
 };
 
 export default CommentsScreen;
