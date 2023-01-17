@@ -27,9 +27,9 @@ const PostsScreen = ({route, navigation}) => {
     setPosts(data.docs.map(doc => ({...doc.data(), id: doc.id})))
     );
   };
-  
+
   useEffect(() => {
-    if(!posts) {
+    if(posts === []) {
     return (<View style={{...styles.screenContainer, justifyContent: 'center'}}>
 		<ActivityIndicator color="#FF6C00" size={40} />
     </View>
