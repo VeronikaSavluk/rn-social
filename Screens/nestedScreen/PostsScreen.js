@@ -27,16 +27,20 @@ const PostsScreen = ({route, navigation}) => {
     setPosts(data.docs.map(doc => ({...doc.data(), id: doc.id})))
     );
   };
+  
+  useEffect(() => {
+    if(!posts) {
+    return (<View style={{...styles.screenContainer, justifyContent: 'center'}}>
+		<ActivityIndicator color="#FF6C00" size={40} />
+    </View>
+		)}
+  }, [posts]);
 
   useEffect(() => {
     getPosts();
   }, []);
 
-  return <>
-  {!posts ? (<View style={{...styles.screenContainer, justifyContent: 'center'}}>
-		<ActivityIndicator color="#FF6C00" size={40} />
-    </View>
-		) :	(
+  return (
     <View style={styles.screenContainer}>
       <View style={styles.userBox}>
         <View style={{width: 60, borderRadius: 16, marginRight: 8}}>
@@ -69,8 +73,7 @@ const PostsScreen = ({route, navigation}) => {
       </View>
       )} />
     </View>
-    )}
-  </>
+  );
 };
 
 export default PostsScreen;
