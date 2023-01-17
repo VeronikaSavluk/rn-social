@@ -1,5 +1,6 @@
 import db from '../../firebase/config';
 import {authSlice} from './authReduser';
+import { Alert } from 'react-native';
 
 const {
 	updateUserProfile,
@@ -28,6 +29,12 @@ export const authSignUpUser = ({nickname, email, password, image}) => async (
 		}));
 	} catch (error) {
 		console.log(error.message);
+		Alert.alert('Registration', `No user created. ${error.message} Try again`, [
+			{
+				text: 'Ok',
+				onPress: () => console.log('Ok Pressed'),
+			},
+		]);
 	}
 };
 
@@ -36,6 +43,7 @@ export const authSignInUser = ({email, password}) => async (dispatch, getState) 
 		const {user} = await db
 		.auth()
 		.signInWithEmailAndPassword(email, password);
+
 		dispatch(updateUserProfile({
 			userId: user.uid,
 			nickname: user.displayName,
@@ -44,12 +52,19 @@ export const authSignInUser = ({email, password}) => async (dispatch, getState) 
 	} catch (error) {
 		console.log(error.message);
 		console.log(error.code);
+		Alert.alert('Login', 'Not found such user. The user may have been deleted', [
+			{
+				text: 'Cancel',
+				onPress: () => console.log('Cancel Pressed'),
+			},
+		]);
 	};
 };
 
 export const authSignOutUser = () => async (
 dispatch, getState) => {
  await db.auth().signOut();
+
  dispatch(authSignOut());
 	};
 
